@@ -1,0 +1,77 @@
+
+<textarea id="response" rows="20" cols="50"></textarea>
+<div id="results"></div>
+<script>
+$(document).ready(function () {
+
+  console.log('hello');
+  $(document).on('dragover', function (e) {
+       e.stopPropagation();
+       e.preventDefault();
+       $('body').css('border', '2px solid red');
+   });
+
+   $(document).on('dragleave', function (e) {
+      e.stopPropagation();
+      e.preventDefault();
+      $('body').css('border', 'none');
+  });
+
+
+  var doUpload = function(f){
+    console.log('file to upload:', f);
+    // debugger;
+
+    var fd = new FormData();
+    fd.append('file', f);
+
+    $.ajax({
+      type: 'POST',
+      url: '/fileupload',
+      dataType: 'json',
+      processData: false,
+      contentType: false,
+      data: fd
+    })
+    .done(function(data){
+     //console.log(data);
+
+
+     $("#response").val(JSON.stringify(data.grpc, null, '\t'));
+
+    // Extract any other data from data.grpc object here! Add to DIVs on page:
+    // If a face, show mood and tags? Even bounding boxes
+
+    // If a landscape, show description tags
+
+    })
+    .fail(function(xhr, stat, err){
+      console.log(xhr, stat, err);
+    });
+  };
+
+  // THIS TRIGGERS the file upload
+  $(document).on('drop', function (e) {
+
+    $('body').css('border', 'none');
+    console.log('drop!');
+
+    e.stopPropagation();
+    e.preventDefault();
+
+    var file = e.originalEvent.dataTransfer.files[0];
+
+    doUpload(file);   // do AJAX upload, send to server
+
+    if( file ){
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        $('.drop-image').remove();
+        $('<img>').attr('src', ev.target.result).addClass('drop-image').css('maxWidth', '500px').appendTo("#results");
+      }
+      reader.readAsDataURL(file);
+      // reader.readAsBinaryString(file);
+    }
+  });
+});
+</script>

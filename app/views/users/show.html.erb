@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3 text-center">
+      <h2>User Details</h2>
+
+      <p>Email:
+        <%= @user.email %>
+      </p>
+
+      <p>Name:
+        <%= @user.name %>
+      </p>
+
+      <!-- <img src="<%= @user.image %>" alt=""> -->
+      <!-- <strong>Image:</strong> -->
+      <div class="profile-image">
+        <%= cl_image_tag( @user.image,
+        :width=>200, :height=>200, :gravity=>"face", :radius=>"max",  :crop=>"thumb" )%>
+      </div>
+      <% if @current_user == @user %>
+      <div class="links btn-group">
+        <%= link_to 'Edit profile', edit_user_path(@user) ,class: "btn btn-default" %>
+        <%= link_to 'Delete', user_path(@user), method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-default"%>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
