@@ -1,8 +1,59 @@
 
-<textarea id="response" rows="20" cols="50"></textarea>
-<div id="results"></div>
+<section class="main-container container">
+  <div id="intro-section-container" class="intro-section-container">
+    <div class="welcome-msg-container">
+      <h1><span class="color-primary">My</span>Bot</h1>
+      <p>Welcome to MyBot. To get started, drag and drop picture to the container below.</p>
+    </div>
+
+    <div class="drop-container">
+      Drop photos <span class="color-primary">here</span>!
+    </div>
+
+
+  </div>
+  <div id="results-section-container" class="results-section-container container">
+    <h2><span class="color-primary">My</span>Bot <span class="color-primary">Says</span>...</h2>
+    <div class="response-container">
+      <div id="fileSaved">
+       &nbsp;
+      </div>
+      <div id="instructions" >
+        Drag an image here<br>to upload and analyse!
+      </div>
+      <table id="response-table">
+       <tr>
+         <th>Description</th>
+         <th>Score</th>
+       </tr>
+
+      </table>
+      <!-- <p class="title">Title: </p>
+      <p>Mood: </p>
+      <p>Tags: </p>
+      <p>Description: </p> -->
+    </div>
+    <div class="result-image">
+      <%= image_tag "sample-girl.jpg" %>
+    </div>
+
+    <div id="loadingContainer">
+      <%= image_tag 'throbber.gif' %>
+    </div>
+    <!-- <button id="saveImage" disabled="true">Save Image</button> -->
+
+  </div>
+</section>
+
+      <textarea id="response" rows="20" cols="50"></textarea>
+
 <script>
 $(document).ready(function () {
+
+  $('#saveImage').on('click', function(){
+    console.log('click');
+
+  });
 
   console.log('hello');
   $(document).on('dragover', function (e) {
@@ -17,10 +68,31 @@ $(document).ready(function () {
       $('body').css('border', 'none');
   });
 
+  var getProgressBar = function(percent){
+    var type = 'success'
+    if(percent < 80){
+      type = 'info';
+    }else if(percent < 60){
+      type = 'warning';
+    }else if(percent < 40){
+      type = 'danger';
+    }
+
+  return `
+<div class="progress">
+  <div class="progress-bar progress-bar-${ type }" role="progressbar" aria-valuenow="${ percent }"
+  aria-valuemin="0" aria-valuemax="100" style="width:${ percent }%">
+   ${ percent }%
+  </div>
+</div>
+`;
+  };
 
   var doUpload = function(f){
     console.log('file to upload:', f);
     // debugger;
+
+    $('#loadingContainer').fadeIn();
 
     var fd = new FormData();
     fd.append('file', f);
@@ -34,11 +106,102 @@ $(document).ready(function () {
       data: fd
     })
     .done(function(data){
-     //console.log(data);
-
+     console.log(data);
 
      $("#response").val(JSON.stringify(data.grpc, null, '\t'));
 
+     if( data.picture_id ){
+       var html = 'Image saved! <a href="/pictures/' + data.picture_id + '" id="imageLink">View Image</a>';
+      $('#fileSaved').html(html).fadeIn(500);
+     }
+
+    // debugger;
+    $('#loadingContainer').hide();
+    $responseContainer = $('.response-container');
+
+    if (data.grpc.face_annotations.length !== 0){
+      // create table using jQuery
+      $faceTable = $('<table id="face_annotations">');
+      $faceTable.appendTo('.response-container');
+
+      // table row
+      $tr = $('<tr>');
+      $tr.appendTo($faceTable);
+
+      // table header
+      $th = $('<th>').html('Emotions');
+      $th.appendTo($tr);
+      $th = $('<th>').html('Likelihood');
+      $th.appendTo($tr);
+
+      // table body
+      for (var i=0; i<data.grpc.face_annotations.length; i++) {
+        var obj = data.grpc.face_annotations[i];
+
+        $tr = $("<tr>");
+        $("<td>").html('anger  likelilhood').appendTo($tr);
+        $("<td>").html(obj.anger_likelihood).appendTo($tr);
+        $tr.appendTo($faceTable);
+
+        $tr = $("<tr>");
+        $("<td>").html('blurred  likelilhood').appendTo($tr);
+        $("<td>").html(obj.blurred_likelihood).appendTo($tr);
+        $tr.appendTo($faceTable);
+
+        $tr = $("<tr>");
+        $("<td>").html('headwear  likelilhood').appendTo($tr);
+        $("<td>").html(obj.headwear_likelihood).appendTo($tr);
+        $tr.appendTo($faceTable);
+
+        $tr = $("<tr>");
+        $("<td>").html('joy  likelilhood').appendTo($tr);
+        $("<td>").html(obj.joy_likelihood).appendTo($tr);
+        $tr.appendTo($faceTable);
+
+        $tr = $("<tr>");
+        $("<td>").html('sorrow  likelilhood').appendTo($tr);
+        $("<td>").html(obj.sorrow_likelihood).appendTo($tr);
+        $tr.appendTo($faceTable);
+
+        $tr = $("<tr>");
+        $("<td>").html('surprise  likelilhood').appendTo($tr);
+        $("<td>").html(obj.surprise_likelihood).appendTo($tr);
+        $tr.appendTo($faceTable);
+
+        $tr = $("<tr>");
+        $("<td>").html('under exposed  likelilhood').appendTo($tr);
+        $("<td>").html(obj.under_exposed_likelihood).appendTo($tr);
+        $tr.appendTo($faceTable);
+
+
+      }
+    }
+    if (data.grpc.label_annotations.length !== 0){
+     for (var i=0; i<data.grpc.label_annotations.length; i++) {
+       var obj = data.grpc.label_annotations[i];
+       var $tr = $("<tr>");
+       $("<td>").addClass('description').html(obj.description).appendTo($tr);
+
+       var progress = getProgressBar(parseInt(obj.score * 100));
+       $("<td>").addClass('score').html(progress).appendTo($tr);
+
+       $tr.appendTo("#response-table");
+       }
+       $('#response-table').fadeIn();
+    }
+    if (data.grpc.landmark_annotations.length !== 0){
+
+    }
+    if (data.grpc.logo_annotations.length !== 0){
+
+    }
+    if (data.grpc.text_annotations.length !== 0){
+
+    }
+
+// for(i = 0; i < $(".blog-post").length; i++) {
+//   $(".blog-post:eq(" + i  + ")").append("<p>Here's a note</p>");
+// }
     // Extract any other data from data.grpc object here! Add to DIVs on page:
     // If a face, show mood and tags? Even bounding boxes
 
@@ -56,6 +219,8 @@ $(document).ready(function () {
     $('body').css('border', 'none');
     console.log('drop!');
 
+    $('#instructions').hide();
+
     e.stopPropagation();
     e.preventDefault();
 
@@ -67,7 +232,8 @@ $(document).ready(function () {
       var reader = new FileReader();
       reader.onload = function(ev) {
         $('.drop-image').remove();
-        $('<img>').attr('src', ev.target.result).addClass('drop-image').css('maxWidth', '500px').appendTo("#results");
+        $(".result-image").empty();
+        $('<img>').attr('src', ev.target.result).addClass('drop-image').css('maxWidth', '500px').appendTo(".result-image");
       }
       reader.readAsDataURL(file);
       // reader.readAsBinaryString(file);

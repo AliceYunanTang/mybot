@@ -37,7 +37,7 @@ gem 'cloudinary'
 # gem 'jquery-rails'
 # gem 'jquery-fileupload-rails'
 
-gem 'google-cloud-vision'
+gem 'google-cloud-vision', require: "google/cloud/vision"
 
 
 # Use Capistrano for deployment

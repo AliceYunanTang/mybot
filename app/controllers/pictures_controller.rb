@@ -43,7 +43,7 @@ class PicturesController < ApplicationController
       # imageUrlString = "http://res.cloudinary.com/cloudalice/image/upload/v1501413921/#{@picture.image}"
       # imageUrlString = "http://res.cloudinary.com/cloudalice/image/upload/v1501413921/yt2mzvwavwdvhzq7vdlx"
       # imageUrlString = "http://res.cloudinary.com/cloudalice/image/upload/v1499942479/cuspd83jpfvrurp0opnu.jpg"
-imageUrlString = "https://cdn.pixabay.com/photo/2017/06/20/23/22/plant-2425328_1280.jpg"
+      imageUrlString = "https://cdn.pixabay.com/photo/2017/06/20/23/22/plant-2425328_1280.jpg"
       # <%= cl_image_tag img.public_id %>
       # <%= image_tag 'filename.jpg' %>
 
@@ -73,8 +73,11 @@ raise 'hell'
 
   def upload
 
+    # require "google/cloud/vision"
     # Cloudinary upload and save public_id result with Picture.create
     if params[:file].present?
+
+      picture = Picture.create user: @current_user
 
       tmpfile = params[:file].tempfile.path  # get AJAX-uploaded temp image path
 
@@ -82,15 +85,19 @@ raise 'hell'
       image = vision.image tmpfile  # give actual temp file to upload to Google; can also provide URL
       annotation = vision.annotate image, faces: true, labels: true
 
-      render json: annotation
+      # return the Vision data AND the picture ID immediately, don't wait for the
+      # Cloudinary upload to finish!
+      render json: { grpc: annotation.grpc, picture_id: picture.id }
 
-      picture = Picture.new user: @current_user
+      # after the upload finishes, update the new picture with its Cloudinary ID
       req = Cloudinary::Uploader.upload params[:file]
-      picture.image = req['public_id']
-      picture.save
-      # what do we do with this new picture? we don't send the ID back to the browser...
+      picture.update image: req['public_id']
 
+      # puts picture
+    else
+      render json: {error: 'No file given'}, status: :unprocessable_entity
     end
+
 
   end
 
@@ -132,6 +139,6 @@ raise 'hell'
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def picture_params
-      params.require(:picture).permit(:title, :image, :detail)
+      params.require(:picture).permit(:title, :image, :detail, :user_id)
     end
 end
