@@ -7,12 +7,15 @@
     </div>
 
     <div class="drop-container">
+      <div id="loadingContainer">
+        <%= image_tag 'throbber.gif' %>
+      </div>
       Drop photos <span class="color-primary">here</span>!
     </div>
 
 
   </div>
-  <div id="results-section-container" class="results-section-container container">
+  <div id="results-section-container" class="results-section-container container is-hidden">
     <h2><span class="color-primary">My</span>Bot <span class="color-primary">Says</span>...</h2>
     <div class="response-container">
       <div id="fileSaved">
@@ -37,15 +40,13 @@
       <%= image_tag "sample-girl.jpg" %>
     </div>
 
-    <div id="loadingContainer">
-      <%= image_tag 'throbber.gif' %>
-    </div>
+
     <!-- <button id="saveImage" disabled="true">Save Image</button> -->
 
   </div>
 </section>
 
-      <textarea id="response" rows="20" cols="50"></textarea>
+      <!-- <textarea id="response" rows="20" cols="50"></textarea> -->
 
 <script>
 $(document).ready(function () {
@@ -88,6 +89,17 @@ $(document).ready(function () {
 `;
   };
 
+  var getLikelihoodIcon = function(likelihood) {
+    var type = 'glyphicon-ok icon-success';
+    if(likelihood == 'VERY_UNLIKELY'){
+      type = 'glyphicon-remove icon-cross';
+    }
+
+    return `
+<span class="glyphicon ${ type }"></span>
+    `;
+  };
+
   var doUpload = function(f){
     console.log('file to upload:', f);
     // debugger;
@@ -108,7 +120,11 @@ $(document).ready(function () {
     .done(function(data){
      console.log(data);
 
-     $("#response").val(JSON.stringify(data.grpc, null, '\t'));
+     $("#intro-section-container").toggleClass("is-hidden");
+     $("#results-section-container").toggleClass("is-hidden");
+
+
+    //  $("#response").val(JSON.stringify(data.grpc, null, '\t'));
 
      if( data.picture_id ){
        var html = 'Image saved! <a href="/pictures/' + data.picture_id + '" id="imageLink">View Image</a>';
@@ -140,39 +156,45 @@ $(document).ready(function () {
 
         $tr = $("<tr>");
         $("<td>").html('anger  likelilhood').appendTo($tr);
-        $("<td>").html(obj.anger_likelihood).appendTo($tr);
+        var icon = getLikelihoodIcon(obj.anger_likelihood);
+        $("<td>").html(icon).appendTo($tr);
         $tr.appendTo($faceTable);
 
         $tr = $("<tr>");
         $("<td>").html('blurred  likelilhood').appendTo($tr);
-        $("<td>").html(obj.blurred_likelihood).appendTo($tr);
+        icon = getLikelihoodIcon(obj.blurred_likelihood);
+        $("<td>").html(icon).appendTo($tr);
         $tr.appendTo($faceTable);
 
         $tr = $("<tr>");
         $("<td>").html('headwear  likelilhood').appendTo($tr);
-        $("<td>").html(obj.headwear_likelihood).appendTo($tr);
+        icon = getLikelihoodIcon(obj.headwear_likelihood);
+        $("<td>").html(icon).appendTo($tr);
         $tr.appendTo($faceTable);
 
         $tr = $("<tr>");
         $("<td>").html('joy  likelilhood').appendTo($tr);
-        $("<td>").html(obj.joy_likelihood).appendTo($tr);
+        icon = getLikelihoodIcon(obj.joy_likelihood);
+        $("<td>").html(icon).appendTo($tr);
         $tr.appendTo($faceTable);
 
         $tr = $("<tr>");
         $("<td>").html('sorrow  likelilhood').appendTo($tr);
-        $("<td>").html(obj.sorrow_likelihood).appendTo($tr);
+        icon = getLikelihoodIcon(obj.sorrow_likelihood);
+        $("<td>").html(icon).appendTo($tr);
         $tr.appendTo($faceTable);
 
         $tr = $("<tr>");
         $("<td>").html('surprise  likelilhood').appendTo($tr);
-        $("<td>").html(obj.surprise_likelihood).appendTo($tr);
+        icon = getLikelihoodIcon(obj.surprise_likelihood);
+        $("<td>").html(icon).appendTo($tr);
         $tr.appendTo($faceTable);
 
         $tr = $("<tr>");
         $("<td>").html('under exposed  likelilhood').appendTo($tr);
-        $("<td>").html(obj.under_exposed_likelihood).appendTo($tr);
+        icon = getLikelihoodIcon(obj.under_exposed_likelihood);
+        $("<td>").html(icon).appendTo($tr);
         $tr.appendTo($faceTable);
-
 
       }
     }

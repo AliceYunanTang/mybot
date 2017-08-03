@@ -1,3 +1,79 @@
 // Place all the styles related to the users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+$color-primary: #EE9572;
+
+$site-wide-transition-duration: 1000ms;
+
+
+@mixin font-normal {
+  font-family: 'Indie Flower', cursive;
+}
+
+@mixin font-feature {
+  font-family: 'Fredoka One', cursive;
+}
+
+.profile-content-container {
+  width: 600px;
+  margin: 60px auto;
+
+  .profile-image {
+    background-color: white;
+    margin: auto;
+    width: 400px;
+    height: auto;
+    padding: 20px;
+    border: 1px solid grey;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 0%;
+      border: 1px solid lightgrey;
+      margin-bottom: 40px;
+    }
+
+    .name {
+      @include font-feature;
+      font-size: 22px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .email {
+      @include font-normal;
+      font-size: 22px;
+      text-align: center;
+    }
+
+    .links {
+      width: 100%;
+      margin-top: 20px;
+
+      a {
+        display: inline-block;
+        width: 49%;
+        text-align: center;
+        padding: 10px;
+        border: 1px solid grey;
+        border-radius: 10px;
+        margin-bottom: 10px;
+
+        &:first-child {
+
+        }
+
+        &:hover,
+        &:focus {
+          color: $color-primary;
+          text-decoration: none;
+          border-color: $color-primary;
+          background-color: white;
+        }
+      }
+
+    }
+  }
+}

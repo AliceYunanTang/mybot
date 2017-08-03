@@ -10,6 +10,17 @@ $site-wide-transition-duration: 1000ms;
   font-family: 'Fredoka One', cursive;
 }
 
+.is-hidden {
+  display: none;
+}
+
+.icon-success {
+  color: green;
+}
+
+.icon-cross {
+  color: grey;
+}
 span {
   &.color-primary {
     color: $color-primary;
@@ -49,7 +60,7 @@ span {
   background-image: url('background-image.jpg');
   background-size: cover;
   background-repeat: no-repeat;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -110,18 +121,32 @@ header {
   }
 
   .nav-container {
+    margin-top: 70px;
     display: inline-block;
+    margin-left: 150px;
   }
 
 
   nav {
-    margin-top: 80px;
 
     ul {
       display: inline-block;
+      margin: 0 0;
+      padding-left: 0;
+
       &.nav-users {
-        display: none;
+        text-align: left;
       }
+
+      &:first-child {
+
+      }
+
+      &:last-child {
+        margin-left: 50px;
+        text-align: right;
+      }
+
       li {
         display: inline-block;
         margin-right: 20px;
@@ -155,12 +180,12 @@ header {
   height: 80vh;
 
   .intro-section-container {
-    display: none;
+    // display: none;
 
 
     .welcome-msg-container {
       width: 60%;
-      margin: 160px auto 20px auto;
+      margin: 80px auto 20px auto;
       h1, p {
         color: white;
       }
@@ -178,7 +203,6 @@ header {
         line-height: 1.25;
         @include font-normal;
       }
-
 
     }
     .drop-container {
@@ -199,7 +223,6 @@ header {
         cursor: pointer;
       }
     }
-
   }
 
   .results-section-container {
@@ -293,3 +316,32 @@ header {
 @-moz-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}
 @-ms-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}
 @keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}
+
+.picture-image-container {
+  margin-top: 10px;
+}
+
+.picture-form-container {
+  background-color: white;
+  width: 60%;
+  min-height: 500px;
+  margin: 40px auto;
+  position: relative;
+  // display: none;
+
+  h2 {
+    @include font-feature;
+    font-size: 40px;
+    text-align: center;
+  }
+}
+
+
+@media (max-width: 1200) {
+
+}
+
+
+@media (max-width: 768px) {
+
+}

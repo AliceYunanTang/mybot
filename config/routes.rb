@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
-  resources :pictures
+
   root to: 'session#new'
 
   resources :users
-
+  resources :pictures
   get    '/login' => 'session#new'
   post   '/login' => 'session#create'
   delete '/login' => 'session#destroy'

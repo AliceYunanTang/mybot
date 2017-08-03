@@ -1,6 +1,21 @@
-<h1>Editing Picture</h1>
 
-<%= render 'form', picture: @picture %>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3 text-center">
+      <h2>Editing Picture</h2>
 
-<%= link_to 'Show', @picture %> |
-<%= link_to 'Back', pictures_path %>
+      <div class="links btn-group">
+        <%= link_to 'Show', @picture,class: "btn btn-default" %>
+        <%= link_to 'Index', pictures_path,class: "btn btn-default" %>
+        <%= link_to 'Delete', picture_path(@picture), method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-default"%>
+      </div>
+
+      <div class="picture-form-container"><%= render 'form', picture: @picture %></div>
+
+      <div class="picture-image-container">
+        <%= cl_image_tag( @picture.image,
+        :width=>600, :height=>600 )%>
+      </div>
+    </div>
+  </div>
+</div>
