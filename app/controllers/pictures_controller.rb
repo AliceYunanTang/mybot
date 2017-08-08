@@ -89,9 +89,10 @@ raise 'hell'
       # Cloudinary upload to finish!
       render json: { grpc: annotation.grpc, picture_id: picture.id }
 
+
       # after the upload finishes, update the new picture with its Cloudinary ID
       req = Cloudinary::Uploader.upload params[:file]
-      picture.update image: req['public_id']
+      picture.update image: req['public_id'], detail: annotation.grpc
 
       # puts picture
     else

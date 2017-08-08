@@ -9,5 +9,6 @@
 
 User.destroy_all
 puts 'Loading Users...'
-u1 = User.create email: 'alice@gmail.com' , name: 'Alice Tang' , password: 'chicken', is_admin:true
-u2 = User.create email: 'dummy@gmail.com' , name: 'Tom Brady' , password: 'chicken', is_admin:false
+u1 = User.create email: 'alice@gmail.com' , name: 'Alice Tang' , password: 'chicken', is_admin:false
+u2 = User.create email: 'admin@gmail.com' , name: 'Admin User' , password: 'chicken', is_admin:true
+u2 = User.create email: 'test@gmail.com' , name: 'Test User' , password: '1234', is_admin:false

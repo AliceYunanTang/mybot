@@ -9,11 +9,10 @@
       <%= cl_image_tag( picture.image )%>
 
       <div class="caption">
-        <h3>Thumbnail label</h3>
-        <p>...</p>
+        <h3><%= picture.title %></h3>
         <%= link_to 'Show', picture, class: "btn btn-primary" %>
         <%= link_to 'Edit', edit_picture_path(picture), class: "btn btn-info"%>
-        <%= link_to 'Destroy', picture, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-danger" %>
+        <%= link_to 'Delete', picture, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-danger" %>
 
       </div>
     </div>
