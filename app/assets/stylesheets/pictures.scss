@@ -6,4 +6,27 @@
 .caption {
   height: 40%;
   text-align: center;
+
+  a {
+    margin-bottom: 5px;
+    &:visited {
+      color: #fff;
+    }
+  }
+}
+.setheight {
+  height: 260px;
+  z-index: 0;
+
+  img {
+    max-height: 140px;
+  }
+}
+
+.picture-show {
+  background-color: #fff;
+
+  img {
+    width: 100%;
+  }
 }

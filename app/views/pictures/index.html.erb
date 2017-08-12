@@ -1,26 +1,22 @@
-  <% counter = 1 %>
+<div class="container">
+  <div class="row">
       <% @pictures.each do |picture| %>
-      <%counter += 1 %>
-      <%if counter == 1 %>
-      <div class="row">
-        <%end%>
-  <div class="col-sm-6 col-md-3 setheight">
-    <div class="thumbnail">
-      <%= cl_image_tag( picture.image )%>
 
-      <div class="caption">
-        <h3><%= picture.title %></h3>
-        <%= link_to 'Show', picture, class: "btn btn-primary" %>
-        <%= link_to 'Edit', edit_picture_path(picture), class: "btn btn-info"%>
-        <%= link_to 'Delete', picture, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-danger" %>
+    <div class="col-sm-6 col-md-3 col-lg-3 setheight">
+      <div class="thumbnail">
+        <%= cl_image_tag( picture.image )%>
 
+        <div class="caption">
+          <h3><%= picture.title %></h3>
+          <%= link_to 'Show', picture, class: "btn btn-primary" %>
+          <%= link_to 'Edit', edit_picture_path(picture), class: "btn btn-info"%>
+          <%= link_to 'Delete', picture, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-danger" %>
+
+        </div>
       </div>
     </div>
-  </div>
-  <%if counter == 1%>
+
+
+<% end %>
 </div>
-<% end%>
-<% if counter == 4 %>
-<% counter = 0 %>
-<% end %>
-<% end %>
+</div>

@@ -40,8 +40,6 @@
             <li><%= link_to 'UPLOAD PICTURE', '/dragdrop' %></li>
             <li><%= link_to 'PICTURES INDEX', pictures_path %></li>
             <li><%= link_to 'USERS INDEX', users_path %></li>
-          </ul>
-          <ul class="nav-ul">
             <li><%= link_to 'LOG OUT', login_path, method: :delete %></li>
             <li><%= link_to "Welcome #{@current_user.name}", user_path( @current_user ) ,class:"welcome"%></li>
           </ul>
@@ -55,6 +53,7 @@
               <li><%= link_to 'SIGN UP', new_user_path %></li>
           </ul>
           <% end %>
+          <a href="javascript:void(0);" class="icon" onclick="">&#9776;</a>
         </nav>
 
       </header>
@@ -66,6 +65,11 @@
 
     <%= yield %>
 
-
+<script>
+  $("nav a.icon").click(function(ev){
+    ev.preventDefault();
+    $("nav a:not(.icon)").toggleClass("responsive");
+  });
+</script>
   </body>
 </html>

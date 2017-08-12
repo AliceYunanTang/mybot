@@ -5,13 +5,23 @@ $color-primary: #EE9572;
 
 $site-wide-transition-duration: 1000ms;
 
-
 @mixin font-normal {
   font-family: 'Indie Flower', cursive;
 }
 
 @mixin font-feature {
   font-family: 'Fredoka One', cursive;
+}
+
+h2 {
+  text-align: center;
+  font-size: 50px;
+  line-height: 1.25;
+  font-weight: 700;
+  @include font-feature;
+  span {
+    color: $color-primary;
+  }
 }
 
 .profile-content-container {
@@ -75,5 +85,57 @@ $site-wide-transition-duration: 1000ms;
       }
 
     }
+  }
+}
+
+.user-index-container {
+
+  width: 400px;
+  margin: 60px auto;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+
+  h2 {
+    @include font-feature;
+    text-align: center;
+    padding: 30px;
+  }
+
+  .table-container {
+    margin: 0 40px;
+    padding-bottom: 40px;
+
+
+    tr {
+
+      &:nth-of-type(odd){
+        background-color: lightgrey;
+      }
+
+      &:nth-of-type(even){
+        background-color: white;
+      }
+
+      td {
+        &:first-child {
+          text-align: left;
+          a {
+            &:hover,
+            &:focus {
+              background-color: $color-primary;
+              text-decoration: none;
+              color: white;
+              padding:8px 4px;
+              border-radius: 2px;
+            }
+          }
+        }
+        &:last-child {
+          text-align: right;
+        }
+      }
+
+    }
+
   }
 }

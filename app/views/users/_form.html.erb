@@ -1,7 +1,9 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3 text-center">
+
+<div class="profile-content-container">
+  <div class="profile-image">
       <%= form_for @user, html: {multipart: true} do |f| %>
+
+<%= cl_image_tag( @user.image )%>
       <div class="form-group">
         <%= f.label :image %>
         <%= f.cl_image_upload :image %>
@@ -28,11 +30,10 @@
           <%= f.password_field :password_confirmation %>
         </div>
 
-        <div class="actions">
+
           <%= f.submit %>
-        </div>
+      
       </div>
       <% end %>
     </div>
   </div>
-</div>
