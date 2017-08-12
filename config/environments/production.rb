@@ -19,6 +19,12 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
+
+config.serve_static_files = true
+config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
+config.assets.compile = true
+config.assets.digest = true
+
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
