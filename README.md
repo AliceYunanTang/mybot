@@ -1,24 +1,16 @@
-# README
+# MyBot - General Assembly Final Project
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+##Overview
+MyBot is a full stack web application where users can drag and drop a picture to browser tab, and MyBot will give you descriptions of the picture and score of each description.
 
-Things you may want to cover:
+When users drag and drop a picture in browser tab, it triggers file upload to Rails backend via jQuery AJAX post. Then rails sends the file directly to Google Cloud Vision API , gets the response and sends it back to the browser.
 
-* Ruby version
+Here is the live site [check it out](https://mybot22.herokuapp.com)
 
-* System dependencies
+![cover image](https://cloudinary.com/console/lui/media_library#/dialog/image/upload/mybot-screenshot_zomepd)
 
-* Configuration
+## Built with
+Ruby on Rails, jQuery ajax, Cloudinary, Google Cloud Vision API, SCSS
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+##Author
+Alice Tang
