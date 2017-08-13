@@ -7,7 +7,7 @@ When users drag and drop a picture in browser tab, it triggers file upload to Ra
 
 Here is the live site [check it out](https://mybot22.herokuapp.com)
 
-![cover image](https://cloudinary.com/console/lui/media_library#/dialog/image/upload/mybot-screenshot_zomepd)
+![cover image](./app/assets/images/mybot-screenshot.jpg)
 
 ## Built with
 Ruby on Rails, jQuery ajax, Cloudinary, Google Cloud Vision API, SCSS
