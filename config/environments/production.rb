@@ -19,7 +19,7 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
-
+# added below four lines to try to make heroku to show background-image without success 13Aug2017
 config.serve_static_files = true
 config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
 config.assets.compile = true

@@ -58,7 +58,7 @@ span {
 
 .background-container {
   background-color: darkgray;
-  background-image: image-url('background-image.jpg');
+  background-image: url(asset-path('background-image.jpg'));
   background-size: cover;
   background-repeat: no-repeat;
   position: fixed;
