@@ -73,6 +73,11 @@ raise 'hell'
 
   def upload
 
+    Google::Auth::ServiceAccountCredentials.make_creds(
+  scope: 'https://www.googleapis.com/auth/drive',
+  json_key_io: StringIO.new(ENV['GOOGLE_APPLICATION_CREDENTIALS'])
+)
+
     # require "google/cloud/vision"
     # Cloudinary upload and save public_id result with Picture.create
     if params[:file].present?
@@ -98,7 +103,6 @@ raise 'hell'
     else
       render json: {error: 'No file given'}, status: :unprocessable_entity
     end
-
 
   end
 
