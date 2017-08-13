@@ -40,7 +40,9 @@ gem 'cloudinary'
 gem 'google-cloud-vision', require: "google/cloud/vision"
 
 #for rails to serve your assets, added this for heroku image background to show
-gem 'rails_12factor'
+group :production do
+  gem 'rails_12factor'
+end
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
