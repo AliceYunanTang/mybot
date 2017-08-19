@@ -1,7 +1,7 @@
 // Place all the styles related to the Pictures controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-
+$color-primary: #EE9572;
 
 .caption {
   height: 40%;
@@ -29,4 +29,33 @@
   img {
     width: 100%;
   }
+}
+
+.links {
+  width: 100%;
+  margin-top: 20px;
+  text-align: center;
+
+  a {
+    display: inline-block;
+    width: 32%;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    margin-bottom: 10px;
+
+    &:first-child {
+
+    }
+
+    &:hover,
+    &:focus {
+      color: $color-primary;
+      text-decoration: none;
+      border-color: $color-primary;
+      background-color: white;
+    }
+  }
+
 }

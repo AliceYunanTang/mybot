@@ -1,19 +1,148 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3 text-center picture-show">
-      <h2><span>Picture</span> Details</h2>
-
-
-      <div class="links btn-group">
-        <%= link_to 'Edit', edit_picture_path(@picture) ,class: "btn btn-default" %>
-        <%= link_to 'Index', pictures_path,class: "btn btn-default" %>
-        <%= link_to 'Delete', picture_path(@picture), method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-default"%>
+<section class="main-container container">
+  <div class="show-page-container container">
+    <h2>
+      <span class="color-primary">My</span>Bot
+      <span class="color-primary">Says</span>...</h2>
+    <div class="response-container">
+      <div >
+        &nbsp;
       </div>
+      <table id="response-table">
+        <tr>
+          <th>Description</th>
+          <th>Score</th>
+        </tr>
 
-      <div class="picture-image-container">
-        <%= cl_image_tag( @picture.image,
-        :width=>600 )%>
-      </div>
+      </table>
+
     </div>
+
+    <div class="result-image container">
+
+      <div class="profile-image">
+        <%= cl_image_tag( @picture.image,:width=>600 )%>
+        <p class="name">
+          <%= @picture.title %>
+        </p>
+
+      </div>
+
+    </div>
+
+    <div class="links btn-group">
+      <%= link_to 'Index', pictures_path,class: "" %>
+      <%= link_to 'Delete', picture_path(@picture), method: :delete, data: {confirm: 'Are you sure?'}, class: ""%>
+    </div>
+
+  </div>
+</section>
+
+<!-- <textarea id="response" rows="20" cols="50"></textarea> -->
+
+<script>
+
+  var getProgressBar = function (percent) {
+    var type = 'success'
+    if (percent < 80) {
+      type = 'info';
+    } else if (percent < 70) {
+      type = 'warning';
+    } else if (percent < 60) {
+      type = 'danger';
+    }
+
+    return `
+<div class="progress">
+  <div class="progress-bar progress-bar-${type}" role="progressbar" aria-valuenow="${percent}"
+  aria-valuemin="0" aria-valuemax="100" style="width:${percent}%">
+   ${percent}%
   </div>
 </div>
+`;
+  };
+
+  var getLikelihoodIcon = function (likelihood) {
+    var type = 'glyphicon-ok icon-success';
+    if (likelihood == 'VERY_UNLIKELY') {
+      type = 'glyphicon-remove icon-cross';
+    }
+
+    return `
+<span class="glyphicon ${type}"></span>
+    `;
+  };
+
+  var showPicDetail = function (data) {
+    console.log(data);
+
+    $responseContainer = $('.response-container');
+
+    // emotions array
+    var emotionsArray = [
+      "anger_likelihood",
+      "blurred_likelihood",
+      "headwear_likelihood",
+      "joy_likelihood",
+      "sorrow_likelihood",
+      "surprise_likelihood",
+      "under_exposed_likelihood"
+    ];
+
+    //extract face annotations from data.grpc object
+    if (data.grpc.face_annotations.length !== 0) {
+      // create table using jQuery
+      $faceTable = $('<table id="face_annotations">');
+      $faceTable.appendTo('.response-container');
+
+      // table row
+      $tr = $('<tr>');
+      $tr.appendTo($faceTable);
+
+      // table header
+      $th = $('<th>').html('Emotions');
+      $th.appendTo($tr);
+      $th = $('<th>').html('Likelihood');
+      $th.appendTo($tr);
+
+      // table body
+      for (var i = 0; i < data.grpc.face_annotations.length; i++) {
+        var obj = data.grpc.face_annotations[i];
+
+        // extract all emotion descriptions from obj, and add to table row
+        for (var j = 0; j < emotionsArray.length; j++) {
+          $tr = $("<tr>");
+          $("<td>").addClass('description').html(emotionsArray[j]).appendTo($tr);
+          var icon = getLikelihoodIcon(obj[emotionsArray[j]]);
+          $("<td>").addClass('score').html(icon).appendTo($tr);
+          $tr.appendTo($faceTable);
+        }
+      }
+    }
+
+    // extract label_annotations from data.grpc object
+    if (data.grpc.label_annotations.length !== 0) {
+      for (var i = 0; i < data.grpc.label_annotations.length; i++) {
+        var obj = data.grpc.label_annotations[i];
+        var $tr = $("<tr>");
+        $("<td>").addClass('description').html(obj.description).appendTo($tr);
+
+        var progress = getProgressBar(parseInt(obj.score * 100));
+        $("<td>").addClass('score').html(progress).appendTo($tr);
+
+        $tr.appendTo("#response-table");
+      }
+      $('#response-table').fadeIn();
+    }
+
+    // extract other annotations from data.grpc object
+    if (data.grpc.landmark_annotations.length !== 0) {}
+    if (data.grpc.logo_annotations.length !== 0) {}
+    if (data.grpc.text_annotations.length !== 0) {}
+
+  };
+
+  $(document).ready(function () {
+    var data = JSON.parse('<%= raw @picture.detail.to_json %>');
+    showPicDetail(data);
+  });
+</script>

@@ -39,7 +39,9 @@
           <ul class="nav-ul">
             <li><%= link_to 'UPLOAD PICTURE', '/dragdrop' %></li>
             <li><%= link_to 'PICTURES INDEX', pictures_path %></li>
+            <% if @current_user.is_admin %>
             <li><%= link_to 'USERS INDEX', users_path %></li>
+            <% end %>
             <li><%= link_to 'LOG OUT', login_path, method: :delete %></li>
             <li><%= link_to "Welcome #{@current_user.name}", user_path( @current_user ) ,class:"welcome"%></li>
           </ul>

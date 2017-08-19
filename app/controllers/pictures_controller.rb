@@ -4,7 +4,12 @@ class PicturesController < ApplicationController
   # GET /pictures
   # GET /pictures.json
   def index
-    @pictures = Picture.all.order(created_at: :desc)
+    if @current_user.is_admin
+      @pictures = Picture.order('created_at DESC')
+    else
+      @pictures = @current_user.pictures.order('created_at DESC')
+    end
+    # @pictures = Picture.all
   end
 
   # GET /pictures/1
@@ -34,28 +39,6 @@ class PicturesController < ApplicationController
     if params[:file].present?
       req = Cloudinary::Uploader.upload params[:file]
       @picture.image = req['public_id']
-
-
-      # require "google/cloud/vision"
-      vision = Google::Cloud::Vision.new
-
-      # image = vision.image "http://www.smh.com.au/content/dam/images/3/y/8/9/4/image.related.articleLeadwide.620x349.ghv4p3.png/1435030602190.jpg"
-      # imageUrlString = "http://res.cloudinary.com/cloudalice/image/upload/v1501413921/#{@picture.image}"
-      # imageUrlString = "http://res.cloudinary.com/cloudalice/image/upload/v1501413921/yt2mzvwavwdvhzq7vdlx"
-      # imageUrlString = "http://res.cloudinary.com/cloudalice/image/upload/v1499942479/cuspd83jpfvrurp0opnu.jpg"
-      imageUrlString = "https://cdn.pixabay.com/photo/2017/06/20/23/22/plant-2425328_1280.jpg"
-      # <%= cl_image_tag img.public_id %>
-      # <%= image_tag 'filename.jpg' %>
-
-      image = vision.image imageUrlString
-      # landmark = image.landmark
-      # landmark.description #=> "Mount Rushmore"
-
-      annotation = vision.annotate image, faces: true, labels: true
-      annotation.faces.count
-      annotation.labels.count
-raise 'hell'
-
     end
 
     respond_to do |format|
@@ -70,9 +53,10 @@ raise 'hell'
   end
 
 
-
   def upload
 
+
+    # Google Cloud Vison authentication on Heroku, if local host, comment below 4 lines 
     Google::Auth::ServiceAccountCredentials.make_creds(
       scope: 'https://www.googleapis.com/auth/drive',
       json_key_io: StringIO.new(ENV['GOOGLE_APPLICATION_CREDENTIALS'])
@@ -97,7 +81,7 @@ raise 'hell'
 
       # after the upload finishes, update the new picture with its Cloudinary ID
       req = Cloudinary::Uploader.upload params[:file]
-      picture.update image: req['public_id'], detail: annotation.grpc
+      picture.update image: req['public_id'], detail: annotation
 
       # puts picture
     else
